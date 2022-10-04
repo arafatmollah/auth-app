@@ -1,0 +1,44 @@
+import React from 'react'
+import {FcGoogle} from 'react-icons/fc'
+import {AiFillFacebook} from 'react-icons/ai'
+import {ge}
+import { GoogleAuthProvider,signInWithPopUp } from 'firebase/auth'
+import { Router, useRouter } from 'next/router'
+import {useAuthState} from 'react-firebase-hooks/auth'
+import { async } from '@firebase/util'
+
+
+
+export default function () {
+const route = useRouter();
+const [user,loading] = useAuthState(auth);
+
+const googleAuthProvider = new GoogleAuthProvider();
+
+const GoogleLogin = async ()=>{
+    try{
+        const result = await signInWithPopUp(auth,googleAuthProvider)
+        console.log(result.user)
+        route.push('/dashboard')
+    }
+    catch(error){
+        console.log(error) 
+    }
+}
+  return (
+    <div>
+        <h2>Join us today</h2>
+        <div>
+            <p>Select Provider</p>
+            <div className='flex flex-col w-30 justify-center align-middle mt-5 shadow-xl py-10 px-5'>
+                <button onClick={GoogleLogin} className='bg-gray-700 text-white w-full flex align-middle gap-2 p-4 rounded-lg'>
+                    <FcGoogle className='text-2xl'></FcGoogle>
+                    Sign In with Google</button>
+                <button className='bg-gray-700 text-white mt-5 flex align-middle p-4 gap-2 w-full rounded-lg'>
+                    <AiFillFacebook className='text-blue-400 text-2xl'></AiFillFacebook>
+                    Sign In with Google</button>
+            </div>
+        </div>
+    </div>
+  )
+}
